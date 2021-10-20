@@ -23,12 +23,18 @@ async function searchShows(query) {
   
   const r = await axios.get(`https://api.tvmaze.com/singlesearch/shows?q=${query}`);
   
+  // handle missing images
+  let showImage = "images/default.png";
+  if (r.data.image.length === 0) {
+    showImage = r.data.image;
+  }
+
   return [
     {
       id: r.data.id,
       name: r.data.name,
       summary: r.data.summary,
-      image: r.data.image
+      image: showImage
     }
   ]
 }
@@ -47,6 +53,7 @@ function populateShows(shows) {
     let $item = $(
       `<div class="col-md-6 col-lg-3 Show" data-show-id="${show.id}">
          <div class="card" data-show-id="${show.id}">
+         <img class="card-img-top" src=${show.image}>
            <div class="card-body">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
