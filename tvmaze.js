@@ -31,10 +31,10 @@ async function searchShows(query) {
 
   return [
     {
-      id: r.data.id,
-      name: r.data.name,
-      summary: r.data.summary,
-      image: showImage
+      'id': r.data.id,
+      'name': r.data.name,
+      'summary': r.data.summary,
+      'image': showImage
     }
   ]
 }
@@ -57,6 +57,7 @@ function populateShows(shows) {
            <div class="card-body">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
+            <button class="btn btn-primary" type="submit">Episodes</button>
            </div>
          </div>
        </div>
@@ -96,4 +97,22 @@ async function getEpisodes(id) {
   //       http://api.tvmaze.com/shows/SHOW-ID-HERE/episodes
 
   // TODO: return array-of-episode-info, as described in docstring above
+  const r = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`);
+
+  // construct the array of episodes
+  const episodes = [];
+  for (let item of r.data) {
+    episodes.push({
+                    'id': item.id,
+                    'name': item.name,
+                    'season': item.season,
+                    'number': item.number
+                  }
+    );
+                  
+    return episodes;
+  }
 }
+
+
+// TODO: write a function populateEpisodes()
