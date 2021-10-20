@@ -108,19 +108,44 @@ async function getEpisodes(id) {
   const episodes = [];
   for (let item of r.data) {
     episodes.push({
-                    'id': item.id,
-                    'name': item.name,
-                    'season': item.season,
-                    'number': item.number
-                  }
-    );
+      'id': item.id,
+      'name': item.name,
+      'season': item.season,
+      'number': item.number
+    });
                   
     return episodes;
   }
 }
 
 
-// // TODO: write a function 
-// async function populateEpisodes(id) {
+// TODO: write a function 
+async function populateEpisodes(episodes) {
+  // clear any episodes from other shows first
+  $('li').remove();
 
-// }
+  for (let episode of episodes) {
+    const newLi = document.createElement('li');
+    newLi.innerText = `${episode.name} - Season: ${episode.season}, Episode: ${episode.number}`
+    $('#episodes-list').append(newLi)
+  }
+
+  $('#episodes-area').show();
+}
+
+
+// manual testing
+// [
+//   {
+//     'id': 1,
+//     'name': 'who was in paris',
+//     'season': 2,
+//     'number': 1
+//   },
+//   {
+//     'id': 2,
+//     'name': 'kanye goes crazy',
+//     'season': 2,
+//     'number': 2
+//   } 
+// ]
