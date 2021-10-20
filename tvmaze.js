@@ -25,8 +25,8 @@ async function searchShows(query) {
   
   // handle missing images
   let showImage = "images/default.png";
-  if (r.data.image.length === 0) {
-    showImage = r.data.image;
+  if ('image' in r.data) {
+    showImage = r.data.image.medium;
   }
 
   return [
