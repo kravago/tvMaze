@@ -21,22 +21,27 @@ async function searchShows(query) {
   // TODO: Make an ajax request to the searchShows api.  Remove
   // hard coded data.
   
-  const r = await axios.get(`https://api.tvmaze.com/singlesearch/shows?q=${query}`);
+  const r = await axios.get(`https://api.tvmaze.com/search/shows?q=${query}`);
   
-  // handle missing images
-  let showImage = "images/default.png";
-  if ('image' in r.data) {
-    showImage = r.data.image.medium;
+  const shows = [];
+  for (let item of r.data) {
+
+    // handle missing images
+    let showImage = "images/default.png";
+    if ('image' in item.show) {
+      showImage = item.show.image.medium;
+    }
+
+    shows.push({
+      'id': item.show.id,
+      'name': item.show.name,
+      'summary': item.show.summary,
+      'image': showImage
+    });  
   }
 
-  return [
-    {
-      'id': r.data.id,
-      'name': r.data.name,
-      'summary': r.data.summary,
-      'image': showImage
-    }
-  ]
+  return shows;
+
 }
 
 
@@ -53,7 +58,7 @@ function populateShows(shows) {
     let $item = $(
       `<div class="col-md-6 col-lg-3 Show" data-show-id="${show.id}">
          <div class="card" data-show-id="${show.id}">
-         <img class="card-img-top" src=${show.image}>
+         <img class="card-img-top" src="${show.image}">
            <div class="card-body">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
@@ -115,4 +120,7 @@ async function getEpisodes(id) {
 }
 
 
-// TODO: write a function populateEpisodes()
+// // TODO: write a function 
+// async function populateEpisodes(id) {
+
+// }
